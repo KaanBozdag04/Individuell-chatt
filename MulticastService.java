@@ -56,6 +56,11 @@ public class MulticastService {
         sendMessage("LEAVE|" + userName);
     }
 
+    // Ny metod: Skickar begäran om lista över aktiva användare
+    public void requestUserList() {
+        sendMessage("REQUEST_USERS|" + userName);
+    }
+
     // Stänger ner socket och lämnar gruppen
     public void shutdown() {
         running = false;
