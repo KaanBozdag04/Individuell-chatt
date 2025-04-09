@@ -17,9 +17,19 @@ public class ChatClient extends JFrame {
 
         // Startar Multicast tjänsten och lyssnar på meddelanden
         this.multicastService = new MulticastService(userName, this::handleMessage);
+        MessageHandler.setMulticastService(multicastService); // Sätter nätverkstjänsten för meddelandehanteraren
 
         setupGUI(); // Bygger GUI:t
         multicastService.sendJoinMessage(); // Meddelar andra att man har gått med
+
+        // Kort fördröjning för att säkerställa att JOIN-meddelandet har skickats
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        multicastService.requestUserList(); // Begär lista över aktiva användare
 
         // När man stänger fönstret skickas ett "LEAVE" meddelande
         addWindowListener(new WindowAdapter() {
